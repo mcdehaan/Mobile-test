@@ -3,17 +3,20 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
     buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "app.com.mobileassignment"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        multiDexEnabled false
+        multiDexEnabled true
         testInstrumentationRunner getInstrumentation()
+    }
+    lintOptions {
+        abortOnError false
     }
 
     buildTypes {
@@ -29,8 +32,14 @@ android {
     }
 }
 
-def getInstrumentation() {
-    project.hasProperty('cucumber') ? 'app.com.mobileassignment.cucumber.runner.CucumberTestRunner' : 'android.support.test.runner.AndroidJUnitRunner'
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+def static getInstrumentation() {
+    return "androidx.test.runner.AndroidJUnitRunner"
 }
 
 def getTestTags() {
@@ -43,7 +52,7 @@ def getTestScenario() {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.8.9'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.9'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.9'
@@ -51,15 +60,19 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:support-annotations:28.0.0'
 
+    implementation 'androidx.annotation:annotation:' + rootProject.androidxLibVersion
+    implementation 'com.google.guava:guava:26.0-android'
+
     testImplementation 'junit:junit:4.12'
     testImplementation "org.mockito:mockito-core:2.18.3"
     testImplementation "org.robolectric:robolectric:3.1.2"
     testImplementation 'org.mockito:mockito-core:2.18.3'
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation'com.android.support.test.espresso:espresso-intents:3.0.2'
-    androidTestImplementation 'info.cukes:cucumber-android:1.2.5'
-    androidTestImplementation 'info.cukes:cucumber-picocontainer:1.2.5'
-    //androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    androidTestImplementation 'androidx.test:core:' + rootProject.coreVersion
+    androidTestImplementation 'androidx.test:core-ktx:' + rootProject.coreVersion
+    androidTestImplementation 'androidx.test.ext:junit:' + rootProject.extJUnitVersion
+    androidTestImplementation 'androidx.test.ext:junit-ktx:' + rootProject.extJUnitVersion
+    androidTestImplementation 'androidx.test:runner:' + rootProject.runnerVersion
+    androidTestImplementation 'androidx.test.espresso:espresso-core:' + rootProject.espressoVersion
 }
