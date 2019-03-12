@@ -1,12 +1,11 @@
 # Changes
 Added test files, dependencies, adjusted gradle, integrated Kotlin
 
-- Added .feature files, step definitions and runner to androidTest folder.
-- Added dependencies to build.gradle files.
-- Updated Gradle version, sdk target and dependency names
-- Integrated Kotlin for Cucumber
+- Removed .feature files, step definitions and runner from androidTest folder.
+- Updated Gradle version to 5.1
+- Added TestSuite configuration
 
-Just run the test by right-clicking the .feature file in app/src/androidTest/assets/features. 
+Just start the test by running the TestSuite configuration. I noticed the app might get a bit confused on emulators so I would recommend running it on a physical device. 
 
 # Description
 A simple native Android application that shows a city on a map. It provides a list of cities which you can search.
